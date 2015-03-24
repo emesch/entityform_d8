@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * Implements hook_schema()
+ */
+/*
+function entityform_schema() {
+  $schema['entityform'] = array(
+    'primary key' => array('entityform_id'),
+    'indexes' => array(
+      'type' => array('type'),
+      'uid' => array('uid'),
+    ),
+    'foreign keys' => array(
+      'uid' => array(
+        'table' => 'users',
+        'columns' => array('uid' => 'uid'),
+      ),
+      'type' => array(
+        'table' => 'entityform_type',
+        'columns' => array('type' => 'type'),
+      ),
+    ),
+  );
+
+  return $schema;
+}
+*/

@@ -1,0 +1,39 @@
+# Administrative
+administer entityform types:
+  title: 'Administer entityform types'   
+  description: 'Create and delete fields for entityform types, and set their permissions.'  
+  restrict access: true  
+  
+# Global (i.e. across all types) 
+edit any entityform:
+  title: 'Edit any entityform submission'
+  restrict access: true
+view any entityform:
+  title: 'View any entityform submission'
+  restrict access: true
+delete any entityform:
+  title: 'Delete any entityform submission'
+  restrict access: true
+edit own entityform:
+  title: 'Edit own entityform submission'
+view own entityform:
+  title: 'View own entityform submission'
+delete own entityform:
+  title: 'Delete own entityform submission'
+  
+# Revisions (global)
+#view any entityform revision:
+#  title: 'View any entityform revision'
+#  restrict access: true
+#revert any entity revision:
+#  title: 'Revert any entityform revision'
+#  restrict access: true
+#view own entityform revision:
+#  title: 'View own entityform revision'
+#revert own entityform revision:
+#  title: 'Revert own entityform revision'  
+  
+# @todo add bundle specific permissions via permission_callbacks
+# permission_callbacks:
+#  - \Entityform\Permissions\EntityformPermissions::entityformTypePermissions
+#  - \Entityform\Permissions\EntityformPermissions::entityformBundlePermissions

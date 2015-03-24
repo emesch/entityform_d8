@@ -1,0 +1,8 @@
+type: module
+name: Entityform
+description: 'Provides fieldable entity forms.'
+package: Entityform
+core: 8.x
+# configure: entityform.admin_settings
+# tags:
+# - developer

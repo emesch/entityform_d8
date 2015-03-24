@@ -1,0 +1,5 @@
+entityform.type.add:
+  route_name: entityform.type.add
+  title: 'Add Entityform type'
+  appears_on:
+    - entityform.type.collection

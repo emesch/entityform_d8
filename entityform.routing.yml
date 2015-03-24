@@ -1,0 +1,44 @@
+# Entityforms
+# @todo Use UUID in url instead of id?
+# entityform.add:
+#  path: 
+      
+# entityform.edit:
+#  path:
+      
+# entityform.delete:
+#  path:
+      
+# Entityform Types      
+entityform.type.add:
+  path: '/admin/structure/eform/add'
+  defaults:
+    _title: 'Add Entityform Type'
+    _entity_form: 'entityform_type.add'
+  requirements:
+    _permission: 'administer entityform types'
+      
+entityform.type.edit:
+  path: '/admin/structure/eform/{entityform_type}'
+  defaults:
+    _title: 'Edit Entityform Type'
+    _entity_form: 'entityform_type.edit'
+  requirements:
+    _permission: 'administer entityform types'
+        
+entityform.type.delete:
+  path: '/admin/structure/eform/{entityform_type}/delete'
+  defaults:
+    _title: 'Delete Entityform Type'
+    _entity_form: 'entityform_type.delete' 
+  requirements:
+    _permission: 'administer entityform types'
+
+entityform.type.collection:
+  path: '/admin/structure/eform/types'
+  defaults:
+    _title: 'Entityform Types'
+    _controller: '\Drupal\Core\Entity\Controller\EntityListController::listing'
+    entity_type: 'entityform_type'
+  requirements:
+    _permission: 'administer entityform types'

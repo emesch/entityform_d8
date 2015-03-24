@@ -1,0 +1,14 @@
+entityform.type.*:
+  type: config_entity
+  label: 'Entityform Type'
+  mapping:
+    id:
+      type: string
+      label: 'Machine name'
+    name:
+      type: label
+      label: 'Name'
+    description:
+      type: text
+      label: 'Description'
+      
