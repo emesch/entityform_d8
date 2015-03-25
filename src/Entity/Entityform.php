@@ -92,7 +92,7 @@ class Entityform extends ContentEntityBase implements EntityformInterface {
       ->setReadOnly(TRUE)
       ->setSetting('unsigned', TRUE);
 
-    $fields['type'] = BaseFieldDefintion::create('entity_reference')
+    $fields['type'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Type'))
       ->setDescription(t('The Entityform type.'))
       ->setSetting('target_type', 'entityform_type')
@@ -129,7 +129,7 @@ class Entityform extends ContentEntityBase implements EntityformInterface {
       ->setSetting('target_type', 'user')
       ->setSetting('handler', 'default')
       // @todo change default value callback
-      ->setDefaultValueCallback('Drupal\node\Entity\Node::getCurrentUserId')
+      //->setDefaultValueCallback('Drupal\node\Entity\Node::getCurrentUserId')
       ->setTranslatable(TRUE)
       ->setDisplayOptions('view', array(
         'label' => 'hidden',

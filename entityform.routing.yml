@@ -1,15 +1,40 @@
-# Entityforms
 # @todo Use UUID in url instead of id?
-# entityform.add:
-#  path: 
+# @todo Add permissions for entityform routes
+
+##### Entityforms #####
+entityform.canonical:
+  path: '/eform/{entityform}'
+  defaults:
+    _title: 'View submission'
+    _entity_view: 'entityform'
+  requirements:
+    _permission: 'administer entityform types'    
+    
+entityform.add:
+  path: '/eform/add/{entityform_type}'
+  defaults:
+    _title: 'Make submission'
+    _entity_form: 'entityform.default' 
+  requirements:
+    _permission: 'administer entityform types'    
+    
+entityform.edit:
+  path: '/eform/{entityform}/edit'
+  defaults:
+    _title: 'Edit submission'
+    _entity_form: 'entityform.edit'    
+  requirements:
+    _permission: 'administer entityform types'
+    
+entityform.delete:
+  path: '/eform/{entityform}/delete'
+  defaults:
+    _title: 'Delete submission'
+    _entity_form: 'entityform.delete'
+  requirements:
+    _permission: 'administer entityform types'
       
-# entityform.edit:
-#  path:
-      
-# entityform.delete:
-#  path:
-      
-# Entityform Types      
+##### Entityform Types #####     
 entityform.type.add:
   path: '/admin/structure/eform/add'
   defaults:
