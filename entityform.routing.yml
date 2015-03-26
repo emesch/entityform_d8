@@ -2,7 +2,7 @@
 # @todo Add proper permissions for entityform routes
 
 ##### Entityforms #####
-entityform.canonical:
+entity.entityform.canonical:
   path: '/eform/{entityform}'
   defaults:
     _title: 'View submission'
@@ -13,12 +13,13 @@ entityform.canonical:
 entityform.add:
   path: '/eform/add/{entityform_type}'
   defaults:
+    _controller: '\Drupal\entityform\Controller\EntityformController::add'
     _title: 'Make submission'
     _entity_form: 'entityform.default' 
   requirements:
     _permission: 'administer entityform types'    
     
-entityform.edit:
+entity.entityform.edit_form:
   path: '/eform/{entityform}/edit'
   defaults:
     _title: 'Edit submission'
@@ -26,7 +27,7 @@ entityform.edit:
   requirements:
     _permission: 'administer entityform types'
     
-entityform.delete:
+entity.entityform.delete_form:
   path: '/eform/{entityform}/delete'
   defaults:
     _title: 'Delete submission'
