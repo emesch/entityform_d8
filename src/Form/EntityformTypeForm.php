@@ -29,10 +29,10 @@ class EntityformTypeForm extends EntityForm {
     // Set the title depending on the operation.
     $type = $this->entity;
     if ($this->operation == 'add') {
-      $form['#title'] = String::checkPlain($this->t('Add Entityform Type'));
+      $form['#title'] = $this->t('Add Entityform Type');
     }
     else {
-      $form['#title'] = String::checkPlain($this->t('Edit Entityform Type %type', array('%type' => $type->label())));
+      $form['#title'] = $this->t('Edit Entityform Type %type', array('%type' => $type->label()));
     }
 
     $form['name'] = array(
@@ -92,10 +92,10 @@ class EntityformTypeForm extends EntityForm {
 
     $status = $type->save();
     if ($status == SAVED_UPDATED) {
-      drupal_set_message('Entityform type %type was updated.', array('%type' => $this->label()));
+      drupal_set_message($this->t('Entityform type %type was updated.', array('%type' => $type->label())));
     }
     elseif ($status == SAVED_NEW) {
-      drupal_set_message('Entityform type %type was created.', array('%type' => $this->label()));
+      drupal_set_message($this->t('Entityform type %type was created.', array('%type' => $type->label())));
     }
   }
 

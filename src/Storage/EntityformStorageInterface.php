@@ -12,6 +12,6 @@ use Drupal\Core\Entity\EntityStorageInterface;
 /**
  * Provides an interface for an EntityformStorage backend
  */
-class EntityformStorageInterface extends EntityStorageInterface {
+interface EntityformStorageInterface extends EntityStorageInterface {
 
 }

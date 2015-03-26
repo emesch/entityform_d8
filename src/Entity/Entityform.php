@@ -9,10 +9,11 @@ namespace Drupal\entityform\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 // @todo Fix Entity type definition
 // @todo Fill in gaps of Entity definition vis-a-vis node
-/*
+/**
  * Defines the Entityform class.
  *
  * @ContentEntityType(
@@ -47,7 +48,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "uuid" = "uuid"
  *   },
  *   bundle_entity_type = "entityform_type",
- *   field_ui_base_route = "entityform.type.edit",
+ *   field_ui_base_route = "entity.entityform_type.edit_form",
  *   permission_granularity = "bundle",
  *   links = {
  *     "canonical" = "/eform/{entityform}",

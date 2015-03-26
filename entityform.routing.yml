@@ -1,5 +1,5 @@
 # @todo Use UUID in url instead of id?
-# @todo Add permissions for entityform routes
+# @todo Add proper permissions for entityform routes
 
 ##### Entityforms #####
 entityform.canonical:
@@ -43,7 +43,7 @@ entityform.type.add:
   requirements:
     _permission: 'administer entityform types'
       
-entityform.type.edit:
+entity.entityform_type.edit_form:
   path: '/admin/structure/eform/{entityform_type}'
   defaults:
     _title: 'Edit Entityform Type'
@@ -51,7 +51,7 @@ entityform.type.edit:
   requirements:
     _permission: 'administer entityform types'
         
-entityform.type.delete:
+entity.entityform_type.delete_form:
   path: '/admin/structure/eform/{entityform_type}/delete'
   defaults:
     _title: 'Delete Entityform Type'
@@ -59,7 +59,7 @@ entityform.type.delete:
   requirements:
     _permission: 'administer entityform types'
 
-entityform.type.collection:
+entity.entityform_type.collection:
   path: '/admin/structure/eform/types'
   defaults:
     _title: 'Entityform Types'
