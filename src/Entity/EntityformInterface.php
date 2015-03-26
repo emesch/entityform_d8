@@ -9,11 +9,12 @@ namespace Drupal\entityform\Entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityChangedInterface;
+use Drupal\user\EntityOwnerInterface;
 
 /**
  * Provides an interface for an Entityform
  */
-interface EntityformInterface extends ContentEntityInterface, EntityChangedInterface {
+interface EntityformInterface extends ContentEntityInterface, EntityChangedInterface, EntityOwnerInterface {
 
   /**
    * Returns a list of eligible status codes
@@ -22,5 +23,13 @@ interface EntityformInterface extends ContentEntityInterface, EntityChangedInter
    *   A list of integer status codes
    */
   public static function getStatii();
+
+  /**
+   * Returns the type label of an entityform.
+   *
+   * @return string|FALSE
+   *   The type label if the type exists, or FALSE.
+   */
+  public function getTypeLabel();
 
 }

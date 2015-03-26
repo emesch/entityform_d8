@@ -7,9 +7,12 @@
 
 namespace Drupal\entityform\Entity;
 
+use Drupal\entityform\Entity\EntityformType;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\user\UserInterface;
+use Drupal\Core\Session\AccountInterface;
 
 // @todo Fix Entity type definition
 // @todo Fill in gaps of Entity definition vis-a-vis node
@@ -24,6 +27,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *     "storage" = "Drupal\entityform\Storage\EntityformStorage",
  *     "storage_schema" = "Drupal\entityform\Storage\EntityformStorageSchema",
  *     "view_builder" = "Drupal\entityform\EntityformViewBuilder",
+ *     "list_builder" = "Drupal\entityform\EntityformListBuilder",
  *     "access" = "Drupal\entityform\Access\EntityformAccess",
  *     "views_data" = "Drupal\entityform\EntityformViewsData",
  *     "form" = {
@@ -177,7 +181,7 @@ class Entityform extends ContentEntityBase implements EntityformInterface {
     return $this->get('changed')->value;
   }
 
-  // @todo Is this the right class for this method?
+  // @todo Put this into EntityformStorage?
   // @todo Complete this method.
   /**
    * Returns the number of Entityforms of a given type.
@@ -190,6 +194,52 @@ class Entityform extends ContentEntityBase implements EntityformInterface {
    */
   public function countEntitiesOfType($id) {
     return 1;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTypeLabel() {
+    $type = EntityformType::load($this->bundle());
+    return $type ? $type->label() : FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOwner() {
+    $this->get('uid')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOwner(UserInterface $account) {
+    $this->set('uid', $account->id());
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOwnerId() {
+    return $this->get('uid')->target_id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOwnerId($uid) {
+    $this->set('uid', $uid);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function access($operation = 'view', AccountInterface $account = NULL, $return_as_object = FALSE) {
+    // @todo Complete this function.
+    return TRUE;
   }
 
 }

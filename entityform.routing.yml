@@ -34,6 +34,15 @@ entity.entityform.delete_form:
     _entity_form: 'entityform.delete'
   requirements:
     _permission: 'administer entityform types'
+    
+entity.entityform.collection:
+  path: '/admin/eform/submissions'
+  defaults:
+    _title: 'Entityform submissions'
+    _controller: 'Drupal\Core\Entity\Controller\EntityListController::listing'
+    entity_type: 'entityform'
+  requirements:
+    _permission: view any entityform
       
 ##### Entityform Types #####     
 entityform.type.add:
