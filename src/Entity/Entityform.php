@@ -7,7 +7,6 @@
 
 namespace Drupal\entityform\Entity;
 
-use Drupal\entityform\Entity\EntityformType;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -181,19 +180,16 @@ class Entityform extends ContentEntityBase implements EntityformInterface {
     return $this->get('changed')->value;
   }
 
-  // @todo Put this into EntityformStorage?
-  // @todo Complete this method.
   /**
-   * Returns the number of Entityforms of a given type.
-   *
-   * @param string $id
-   *   The machine name of the Entityform type.
-   *
-   * @return integer
-   *   The number of Entityforms.
+   * {@inheritdoc}
    */
-  public function countEntitiesOfType($id) {
-    return 1;
+  public static function countByType($id) {
+    // @todo Shouldn't call \Drupal::entityQuery directly; inject dependency here, or move method to another class?  Storage class?
+    // @see https://www.drupal.org/node/2133171
+    return \Drupal::entityQuery('entityform')
+      ->condition('type', $id)
+      ->count()
+      ->execute();
   }
 
   /**
