@@ -48,71 +48,47 @@ function drush_entityform_bench_add_fields($number = 50, $name = NULL) {
   // @see \Drupal\field_ui\Form\FieldStorageAddForm submitForm()
   $bundle = EntityformType::load($name);
   if ($bundle) {
-    $field_name = 'test';
     $entity_manager = \Drupal::service('entity.manager');
     $field_storage_values = [
-      'field_name' => $field_name,
       'entity_type' => 'entityform',
       'type' => 'integer',
       'translatable' => TRUE,
     ];
     $field_values = [
-      'field_name' => $field_name,
       'entity_type' => 'entityform',
       'bundle' => $name,
-      'label' => $field_name,
       'translatable' => TRUE,
     ];
-
-    $entity_manager->getStorage('field_storage_config')->create($field_storage_values)->save();
-    $field = $entity_manager->getStorage('field_config')->create($field_values);
-    $field->save();
+    //$form_settings = entity_get_form_display('entityform', $name, 'default');
+    //$view_settings = entity_get_display('entityform', $name, 'default');
+    for ($counter = 0; $counter < $number; $counter++) {
+      $field_name = 'ebench_' . rand(0, 5000000);
+      $field_storage_values['field_name'] = $field_name;
+      $field_values['field_name'] = $field_name;
+      $field_values['label'] = $field_name;
+      $entity_manager->getStorage('field_storage_config')->create($field_storage_values)->save();
+      $field = $entity_manager->getStorage('field_config')->create($field_values);
+      $field->save();
+      entity_get_form_display('entityform', $name, 'default')
+        ->setComponent($field_name, array('type' => 'number'))
+        ->save();
+      entity_get_display('entityform', $name, 'default')
+        ->setComponent($field_name, array('type' => 'number_integer'))
+        ->save();
+      //$form_settings->setComponent($field_name, array('type' => 'number'));
+      //$view_settings->setComponent($field_name, array('type' => 'number_integer'));
+    }
 
     // Set configuration for bundle edit form display
-    entity_get_form_display('entityform', $name, 'default')
-      ->setComponent($field_name, ['type' => 'entity_reference_autocomplete'])
-      ->save();
-
+    //$form_settings->save();
     // Set configuration for bundle display
-    entity_get_display('entityform', $name, 'default')
-      ->setComponent($field_name, ['type' => 'author'])
-      ->save();
-
-    /*
-    $field['test'] = BaseFieldDefinition::create('entity_reference')
-      ->setName($field_name)
-      ->setLabel(t('Completed by'))
-      ->setDescription(t('The user id of the user that completed the form.'))
-      ->setRevisionable(TRUE)
-      ->setSetting('target_type', 'user')
-      ->setSetting('handler', 'default')
-      ->setTranslatable(TRUE)
-      ->setDisplayOptions('view', array(
-        'type' => 'author',
-        'weight' => 0,
-      ))
-      ->setDisplayOptions('form', array(
-        'type' => 'entity_reference_autocomplete',
-        'weight' => 5,
-        'settings' => array(
-          'match_operator' => 'CONTAINS',
-          'size' => '60',
-          'placeholder' => '',
-        ),
-      ))
-      ->setDisplayConfigurable('form', TRUE)
-      ->setTargetBundle($name)
-      ->setTargetEntityTypeId('entityform');
-     */
-
-    //Entityform::bundleFieldDefinitions(EntityformType, $name, $bundle_fields);
-
+    //$view_settings->save();
+    drush_print(dt('Created @num integer fields on @bundle.', array('@num' => $number, '@bundle' => $name)));
   }
   else {
     drush_print(dt('Could not find bundle type @type', array('@type' => $name)));
   }
 }
-
 
 /**
  * Drush command callback for 'entityform_bench_create_type'

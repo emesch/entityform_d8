@@ -173,7 +173,7 @@ class Entityform extends ContentEntityBase implements EntityformInterface {
       static::ENTITYFORM_COMPLETE,
     );
   }
-
+  
   /**
    * {@inheritdoc}
    */
