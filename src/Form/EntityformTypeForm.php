@@ -93,10 +93,14 @@ class EntityformTypeForm extends EntityForm {
     $status = $type->save();
     if ($status == SAVED_UPDATED) {
       drupal_set_message($this->t('Entityform type %type was updated.', array('%type' => $type->label())));
+      $this->logger('entityform')->notice('Entityform type @type was updated.', array('@type' => $type->label()));
     }
     elseif ($status == SAVED_NEW) {
       drupal_set_message($this->t('Entityform type %type was created.', array('%type' => $type->label())));
+      $this->logger('entityform')->notice('Entityform type @type was created.', array('@type' => $type->label()));
     }
+
+    $form_state->setRedirectUrl($type->urlInfo('collection'));
   }
 
 }

@@ -1,0 +1,21 @@
+# Individual submission links
+entity.entityform.canonical:
+  route_name: entity.entityform.canonical
+  base_route: entity.entityform.canonical
+  title: 'View'
+entity.entityform.edit_form:
+  route_name: entity.entityform.edit_form
+  base_route: entity.entityform.canonical
+  title: Edit
+entity.entityform.delete_form:
+  route_name: entity.entityform.delete_form
+  base_route: entity.entityform.canonical
+  title: Delete
+  weight: 10
+
+
+# Entityform type  
+entity.entityform_type.edit_form:
+  title: 'Edit'
+  route_name: entity.entityform_type.edit_form
+  base_route: entity.entityform_type.edit_form
