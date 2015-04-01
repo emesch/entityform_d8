@@ -88,7 +88,7 @@ class EntityformListBuilder extends EntityListBuilder {
    */
   public function render() {
     $build = parent::render();
-    $build['#empty'] = $this->t('No Entityform submissions have yet been made.');
+    $build['table']['#empty'] = $this->t('No Entityform submissions have yet been made.');
     return $build;
   }
 

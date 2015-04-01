@@ -3,3 +3,9 @@ entityform.type.add:
   title: 'Add Entityform type'
   appears_on:
     - entity.entityform_type.collection
+    
+entityform.type.view_submissions:
+  route_name: entity.entityform.collection
+  title: 'View submissions'
+  appears_on:
+    - entity.entityform_type.collection

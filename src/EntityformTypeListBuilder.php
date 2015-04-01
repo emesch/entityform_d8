@@ -39,7 +39,7 @@ class EntityformTypeListBuilder extends ConfigEntityListBuilder {
    */
   public function render() {
     $build = parent::render();
-    $build['#empty'] = $this->t('No Entityform types have been created yet.');
+    $build['table']['#empty'] = $this->t('No Entityform types have been created yet.');
     return $build;
   }
 

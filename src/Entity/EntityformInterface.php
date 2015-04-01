@@ -32,4 +32,15 @@ interface EntityformInterface extends ContentEntityInterface, EntityChangedInter
    */
   public function getTypeLabel();
 
+  /**
+   * Returns the number of Entityforms of a given type.
+   *
+   * @param string $id
+   *   The machine name of the Entityform type.
+   *
+   * @return integer
+   *   The number of Entityforms.
+   */
+  public static function countByType($id);
+
 }

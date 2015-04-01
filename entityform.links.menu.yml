@@ -1,0 +1,12 @@
+entity.entityform_type.collection:
+  title: 'Entityform types'
+  parent: system.admin_structure
+  description: 'Manage entityform types.'
+  route_name: entity.entityform_type.collection
+  
+entity.entityform.collection:
+  title: 'Submissions'
+  parent: system.admin
+  description: 'Review/manage entityform submissions.'
+  route_name: entity.entityform.collection
+  weight: -9
