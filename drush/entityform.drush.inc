@@ -1,5 +1,7 @@
 <?php
 
+use \Drupal\Component\Utility\Random;
+
 /**
  * Implements hook_drush_command()
  */
@@ -73,7 +75,7 @@ function drush_entityform_bench_add_fields($entity_type, $name, $number = 50) {
       $form_settings = entity_get_form_display($entity_type, $id, 'default');
       $view_settings = entity_get_display($entity_type, $id, 'default');
       for ($counter = 0; $counter < $number; $counter++) {
-        $field_name = 'ebench_' . rand(0, 500000000);
+        $field_name = (new Random())->word(12);
         $field_storage_values['field_name'] = $field_name;
         $field_values['field_name'] = $field_name;
         $field_values['label'] = $field_name;
@@ -105,7 +107,7 @@ function drush_entityform_bench_create_type($entity_type, $number = 50) {
   // Find the property values of the config entity keys so that we can set them (they can have different values among bundle config entities).
   $entity_keys = \Drupal::entityManager()->getDefinition($bundle_config)->get('entity_keys');
   for ($counter = 0; $counter < $number; $counter++) {
-    $bundle_name = 'bench_' . rand(0, 5000000);
+    $bundle_name = (new Random())->word(12);
     // Only set the bare minimum ('id' and 'label') properties for the bundle.
     $config = array(
       $entity_keys['id'] => $bundle_name,
