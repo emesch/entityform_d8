@@ -12,10 +12,12 @@ function entityform_drush_command() {
     'description' => dt('Add the specified number of fields to an entityform bundle.'),
     'arguments' => array(
       'number' => dt('Number of fields to add.'),
-      'name' => dt('The bundle to which to add fields.'),
+      'name' => dt('The bundle to which to add fields.  Specify "all" for all bundles, or a comma-delimited list.'),
     ),
     'examples' => array(
       'ebaf 50 test' => dt('Add 50 fields to the "test" entityform bundle.'),
+      'ebaf 5 all' => dt('Add 5 fields to every bundle that exists.'),
+      'ebaf 100 a,b,c' => dt('Add 100 fields to bundles "a", "b", and "c".'),
     ),
     'aliases' => array('ebaf'),
   );
@@ -43,11 +45,11 @@ function entityform_drush_command() {
  * Drush command callback for 'entityform_bench_add_fields'
  */
 function drush_entityform_bench_add_fields($number = 50, $name = NULL) {
-  // No easy way to do this via the API right now.
-  // @see https://www.drupal.org/node/2346347
-  // @see \Drupal\field_ui\Form\FieldStorageAddForm submitForm()
   $bundle = EntityformType::load($name);
   if ($bundle) {
+    // No easy way to do attach fields via the API right now.
+    // @see https://www.drupal.org/node/2346347
+    // @see \Drupal\field_ui\Form\FieldStorageAddForm submitForm()
     $entity_manager = \Drupal::service('entity.manager');
     $field_storage_values = [
       'entity_type' => 'entityform',
@@ -59,30 +61,24 @@ function drush_entityform_bench_add_fields($number = 50, $name = NULL) {
       'bundle' => $name,
       'translatable' => TRUE,
     ];
-    //$form_settings = entity_get_form_display('entityform', $name, 'default');
-    //$view_settings = entity_get_display('entityform', $name, 'default');
+    $form_settings = entity_get_form_display('entityform', $name, 'default');
+    $view_settings = entity_get_display('entityform', $name, 'default');
     for ($counter = 0; $counter < $number; $counter++) {
       $field_name = 'ebench_' . rand(0, 5000000);
       $field_storage_values['field_name'] = $field_name;
       $field_values['field_name'] = $field_name;
       $field_values['label'] = $field_name;
+      $field_values['default_value'] = 52;
       $entity_manager->getStorage('field_storage_config')->create($field_storage_values)->save();
-      $field = $entity_manager->getStorage('field_config')->create($field_values);
-      $field->save();
-      entity_get_form_display('entityform', $name, 'default')
-        ->setComponent($field_name, array('type' => 'number'))
-        ->save();
-      entity_get_display('entityform', $name, 'default')
-        ->setComponent($field_name, array('type' => 'number_integer'))
-        ->save();
-      //$form_settings->setComponent($field_name, array('type' => 'number'));
-      //$view_settings->setComponent($field_name, array('type' => 'number_integer'));
+      $entity_manager->getStorage('field_config')->create($field_values)->save();
+      $form_settings->setComponent($field_name, array('type' => 'number'));
+      $view_settings->setComponent($field_name, array('type' => 'number_integer', 'label' => 'above'));
     }
 
     // Set configuration for bundle edit form display
-    //$form_settings->save();
+    $form_settings->save();
     // Set configuration for bundle display
-    //$view_settings->save();
+    $view_settings->save();
     drush_print(dt('Created @num integer fields on @bundle.', array('@num' => $number, '@bundle' => $name)));
   }
   else {
