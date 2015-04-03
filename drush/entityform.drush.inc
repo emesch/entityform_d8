@@ -34,7 +34,14 @@ function entityform_drush_command() {
   );
 
   $items['entityform_bench_delete_types'] = array(
-    'description' => dt('Delete all entitform types prefixed with "bench_"'),
+    'description' => dt('Delete all entitform types."'),
+    'arguments' => array(
+      'name' => dt('The bundles to delete.  Specify "all" for all bundles, or a comma-delimited list.'),
+    ),
+    'examples' => array(
+      'ebdt all' => dt('Delete all bundles.'),
+      'ebdt a,b,c' => dt('Delete bundles "a", "b", and "c".'),
+    ),
     'aliases' => array('ebdt'),
   );
 
@@ -45,44 +52,47 @@ function entityform_drush_command() {
  * Drush command callback for 'entityform_bench_add_fields'
  */
 function drush_entityform_bench_add_fields($number = 50, $name = NULL) {
-  $bundle = EntityformType::load($name);
-  if ($bundle) {
-    // No easy way to do attach fields via the API right now.
-    // @see https://www.drupal.org/node/2346347
-    // @see \Drupal\field_ui\Form\FieldStorageAddForm submitForm()
-    $entity_manager = \Drupal::service('entity.manager');
-    $field_storage_values = [
-      'entity_type' => 'entityform',
-      'type' => 'integer',
-      'translatable' => TRUE,
-    ];
-    $field_values = [
-      'entity_type' => 'entityform',
-      'bundle' => $name,
-      'translatable' => TRUE,
-    ];
-    $form_settings = entity_get_form_display('entityform', $name, 'default');
-    $view_settings = entity_get_display('entityform', $name, 'default');
-    for ($counter = 0; $counter < $number; $counter++) {
-      $field_name = 'ebench_' . rand(0, 5000000);
-      $field_storage_values['field_name'] = $field_name;
-      $field_values['field_name'] = $field_name;
-      $field_values['label'] = $field_name;
-      $field_values['default_value'] = 52;
-      $entity_manager->getStorage('field_storage_config')->create($field_storage_values)->save();
-      $entity_manager->getStorage('field_config')->create($field_values)->save();
-      $form_settings->setComponent($field_name, array('type' => 'number'));
-      $view_settings->setComponent($field_name, array('type' => 'number_integer', 'label' => 'above'));
-    }
+  $ids = bench_parse_bundle_names($name);
+  foreach ($ids as $id) {
+    $bundle = entity_load('entityform_type', $id);
+    if ($bundle) {
+      // No easy way to do attach fields via the API right now.
+      // @see https://www.drupal.org/node/2346347
+      // @see \Drupal\field_ui\Form\FieldStorageAddForm submitForm()
+      $entity_manager = \Drupal::service('entity.manager');
+      $field_storage_values = [
+        'entity_type' => 'entityform',
+        'type' => 'integer',
+        'translatable' => TRUE,
+      ];
+      $field_values = [
+        'entity_type' => 'entityform',
+        'bundle' => $id,
+        'translatable' => TRUE,
+      ];
+      $form_settings = entity_get_form_display('entityform', $id, 'default');
+      $view_settings = entity_get_display('entityform', $id, 'default');
+      for ($counter = 0; $counter < $number; $counter++) {
+        $field_name = 'ebench_' . rand(0, 500000000);
+        $field_storage_values['field_name'] = $field_name;
+        $field_values['field_name'] = $field_name;
+        $field_values['label'] = $field_name;
+        $field_values['default_value'] = 52;
+        $entity_manager->getStorage('field_storage_config')->create($field_storage_values)->save();
+        $entity_manager->getStorage('field_config')->create($field_values)->save();
+        $form_settings->setComponent($field_name, array('type' => 'number'));
+        $view_settings->setComponent($field_name, array('type' => 'number_integer', 'label' => 'above'));
+      }
 
-    // Set configuration for bundle edit form display
-    $form_settings->save();
-    // Set configuration for bundle display
-    $view_settings->save();
-    drush_print(dt('Created @num integer fields on @bundle.', array('@num' => $number, '@bundle' => $name)));
-  }
-  else {
-    drush_print(dt('Could not find bundle type @type', array('@type' => $name)));
+      // Set configuration for bundle edit form display
+      $form_settings->save();
+      // Set configuration for bundle display
+      $view_settings->save();
+      drush_print(dt('Created @num integer fields on "@bundle".', array('@num' => $number, '@bundle' => $id)));
+    }
+    else {
+      drush_print(dt('Could not find bundle type "@type"', array('@type' => $id)));
+    }
   }
 }
 
@@ -115,40 +125,37 @@ function drush_entityform_bench_create_type($number = 50) {
 /**
  * Drush command callback for 'entityform_delete_types'
  */
-function drush_entityform_bench_delete_types() {
-  $ids = \Drupal::entityQuery('entityform_type')
-    ->execute();
+function drush_entityform_bench_delete_types($name) {
+  $ids = bench_parse_bundle_names($name);
+  drush_print(dt('There are @count bundles to try to delete.', array('@count' => count($ids))));
+  foreach ($ids as $id) {
+    if (entity_load('entityform_type', $id)) {
+      entity_delete_multiple('entityform_type', array($id));
+      drush_print(dt('Bundle "@bundle" deleted.', array('@bundle' => $id)));
+    }
+    else {
+      drush_print(dt('Bundle "@bundle" does not exist.', array('@bundle' => $id)));
+    }
+  }
+}
 
-  if ($ids) {
-    $total = count($ids);
-    drush_print(dt('Found @total of entityform types.', array('@total' => $total)));
+/**
+ * Returns a list of bundles based on Drush command argument.
+ *
+ * @param string $name
+ *   The "name" Drush command argument value.
+ *
+ * @return array
+ *   The bundles.
+ */
+function bench_parse_bundle_names($name) {
+  if ($name == 'all') {
+    $ids = \Drupal::entityQuery('entityform_type')
+      ->execute();
   }
   else {
-    drush_print(dt('No bundles found.'));
-    return;
+    $ids = explode(',', $name);
   }
 
-  $count = 0;
-  $count_pass = 0;
-  $per_pass = 50;
-  foreach ($ids as $id => $name) {
-    if (strpos($name, 'bench_') === 0) {
-      $to_delete[] = $id;
-      $count++;
-      $count_pass++;
-    }
-
-    if ($count_pass == $per_pass) {
-      entity_delete_multiple('entityform_type', $to_delete);
-      drush_print(dt('@num bundles have been deleted.', array('@num' => $count)));
-      $to_delete = array();
-      $count_pass = 0;
-    }
-  }
-
-  if (!empty($to_delete)) {
-    entity_delete_multiple('entityform_type', $to_delete);
-  }
-
-  drush_print(dt('Done.  Deleted @count entityform bundles.', array('@count' => $count)));
+  return $ids;
 }
