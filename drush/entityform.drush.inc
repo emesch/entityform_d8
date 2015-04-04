@@ -56,6 +56,7 @@ function drush_entityform_bench_add_fields($entity_type, $name, $number = 50) {
   $bundle_config = \Drupal::entityManager()->getDefinition($entity_type)->get('bundle_entity_type');
   $ids = bench_parse_bundle_names($name, $bundle_config);
   foreach ($ids as $id) {
+    $start_time = microtime(TRUE);
     $bundle = entity_load($bundle_config, $id);
     if ($bundle) {
       // No easy way to do attach fields via the API right now.
@@ -90,7 +91,8 @@ function drush_entityform_bench_add_fields($entity_type, $name, $number = 50) {
       $form_settings->save();
       // Set configuration for bundle display
       $view_settings->save();
-      drush_print(dt('Created @num integer fields on @entity bundle "@bundle".', array('@num' => $number, '@entity' => $entity_type, '@bundle' => $id)));
+      $end_time = microtime(TRUE);
+      drush_print(dt('Created @num integer fields on @entity bundle "@bundle" in @time seconds.', array('@num' => $number, '@entity' => $entity_type, '@bundle' => $id, '@time' => ($end_time - $start_time))));
     }
     else {
       drush_print(dt('Could not find bundle type "@type"', array('@type' => $id)));
