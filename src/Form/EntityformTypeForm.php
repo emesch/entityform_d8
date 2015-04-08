@@ -62,6 +62,14 @@ class EntityformTypeForm extends EntityForm {
       '#description' => t('Enter a brief description of the Entityform type.'),
     );
 
+    $form['max_submissions_per_user'] = array(
+      '#title' => t('Max. submissions per user.'),
+      '#description' => t('The maximum number of submissions permitted per user ("0" for unlimited).'),
+      '#type' => 'textfield',
+      '#default_value' => $type->getMaxSubmissionsPerUser(),
+      '#maxlength' => 4,
+    );
+
     return $form;
   }
 
@@ -77,6 +85,12 @@ class EntityformTypeForm extends EntityForm {
     $id = trim($form_state->getValue('id'));
     if ($id == '0') {
       $form_state->setErrorByName('id', $this->t("Invalid machine-readable name. Enter a name other than %invalid.", array('%invalid' => $id)));
+    }
+
+    // Ensure the max submissions per user is a number.
+    $max_submissions_per_user = trim($form_state->getValue('max_submissions_per_user'));
+    if (!ctype_digit($max_submissions_per_user)) {
+      $form_state->setErrorByName('max_submissions_per_user', $this->t("Maximum submissions per user must be 0 or a positive integer."));
     }
   }
 

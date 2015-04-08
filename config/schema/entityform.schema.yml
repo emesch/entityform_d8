@@ -11,4 +11,7 @@ entityform.type.*:
     description:
       type: text
       label: 'Description'
+    max_submissions_per_user:
+      type: integer
+      label: 'Maximum number of submissions per user'
       

@@ -43,4 +43,17 @@ interface EntityformInterface extends ContentEntityInterface, EntityChangedInter
    */
   public static function countByType($id);
 
+  /**
+   * Returns the number of Entityforms of a given type submitted by the same user.
+   *
+   * @param string $id
+   *   The machine name of the Entityform type.   *
+   * @param integer $uid
+   *   The user id.
+   *
+   * @return integer
+   *   The number of Entityforms.
+   */
+  public static function countByTypeUser($id, $uid);
+
 }

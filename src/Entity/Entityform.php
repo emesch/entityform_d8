@@ -195,6 +195,18 @@ class Entityform extends ContentEntityBase implements EntityformInterface {
   /**
    * {@inheritdoc}
    */
+  public static function countByTypeUser($id, $uid) {
+    // @see Entityform::countByType()
+    return \Drupal::entityQuery('entityform')
+      ->condition('type', $id)
+      ->condition('uid', $uid)
+      ->count()
+      ->execute();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getTypeLabel() {
     $type = EntityformType::load($this->bundle());
     return $type ? $type->label() : FALSE;

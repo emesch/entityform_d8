@@ -23,4 +23,12 @@ interface EntityformTypeInterface extends ConfigEntityInterface {
    */
   public function getDescription();
 
+  /**
+   * Returns the number of submissions allowed per user.
+   *
+   * @return integer
+   *   The number of submissions allowed per user.
+   */
+  public function getMaxSubmissionsPerUser();
+
 }

@@ -78,7 +78,7 @@ class EntityformType extends ConfigEntityBundleBase implements EntityformTypeInt
    *
    * @var integer
    */
-  //protected $max_submissions_per_user = 0;
+  protected $max_submissions_per_user = 0;
 
   /**
    * Whether to allow submissions by anonymous users
@@ -92,6 +92,13 @@ class EntityformType extends ConfigEntityBundleBase implements EntityformTypeInt
    */
   public function getDescription() {
     return $this->description;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getMaxSubmissionsPerUser() {
+    return $this->max_submissions_per_user;
   }
 
 }
